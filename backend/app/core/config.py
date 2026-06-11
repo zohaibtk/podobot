@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 from pydantic import Field, RedisDsn, field_validator, model_validator
@@ -9,6 +10,12 @@ DEFAULT_POSTGRES_PASSWORD = "podobot"
 DEFAULT_BUFFER_WEBHOOK_SECRET = "podobot-buffer-webhook-development-secret"
 DEFAULT_AUTH_JWT_SECRET = "podobot-development-secret-change-me"
 DEFAULT_AUTH_DEV_ADMIN_PASSWORD = "admin"
+
+
+def default_local_storage_root() -> str:
+    if os.getenv("VERCEL"):
+        return "/tmp/podobot-storage"
+    return str(REPOSITORY_ROOT / ".local/storage")
 
 
 class Settings(BaseSettings):
@@ -40,7 +47,7 @@ class Settings(BaseSettings):
     redis_url: RedisDsn = "redis://localhost:6379/0"
     celery_result_backend_url: RedisDsn = "redis://localhost:6379/1"
 
-    local_storage_root: str = str(REPOSITORY_ROOT / ".local/storage")
+    local_storage_root: str = Field(default_factory=default_local_storage_root)
     max_upload_bytes: int = 5_368_709_120
     media_signed_url_seconds: int = 900
     media_upload_chunk_bytes: int = 1_048_576
@@ -88,6 +95,8 @@ class Settings(BaseSettings):
         path = Path(value)
         if path.is_absolute():
             return str(path)
+        if os.getenv("VERCEL"):
+            return str(Path("/tmp") / path)
         return str(REPOSITORY_ROOT / path)
 
     @field_validator("cors_origins", mode="before")

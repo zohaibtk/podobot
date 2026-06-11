@@ -62,6 +62,22 @@ def test_production_settings_accept_safe_values() -> None:
     assert safe_settings.environment == "production"
 
 
+def test_vercel_settings_default_storage_uses_tmp(monkeypatch) -> None:
+    monkeypatch.setenv("VERCEL", "1")
+
+    vercel_settings = Settings(_env_file=None)
+
+    assert vercel_settings.local_storage_root == "/tmp/podobot-storage"
+
+
+def test_vercel_relative_storage_resolves_under_tmp(monkeypatch) -> None:
+    monkeypatch.setenv("VERCEL", "1")
+
+    vercel_settings = Settings(local_storage_root="podobot-storage", _env_file=None)
+
+    assert vercel_settings.local_storage_root == "/tmp/podobot-storage"
+
+
 @pytest.mark.parametrize(
     ("field_name", "override_value"),
     [

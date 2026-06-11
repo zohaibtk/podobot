@@ -4,8 +4,8 @@ import sys
 
 
 def main() -> int:
-    if os.getenv("RUN_DB_MIGRATIONS", "1") == "0":
-        print("Skipping database migrations because RUN_DB_MIGRATIONS=0.")
+    if os.getenv("RUN_DB_MIGRATIONS", "0") != "1":
+        print("Skipping database migrations. Set RUN_DB_MIGRATIONS=1 to run them during build.")
         return 0
 
     if not os.getenv("DATABASE_URL_OVERRIDE"):

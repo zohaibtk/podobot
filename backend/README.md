@@ -29,6 +29,23 @@ cd backend
 ../.venv/bin/python -m ruff check app tests
 ```
 
+## Vercel Deployment
+
+Deploy this folder as its own Vercel project with the project Root Directory set to `backend`.
+The FastAPI serverless entrypoint is `api/index.py`, and `vercel.json` rewrites all requests to
+that ASGI app.
+
+Required deployment files:
+
+- `vercel.json`: build command, `public` output directory, function bundle exclusions, and rewrites.
+- `.python-version`: pins Vercel's Python runtime to a supported version.
+- `pyproject.toml` or `requirements.txt`: runtime dependencies.
+- `public/vercel-build.txt`: tracked placeholder for Vercel's configured output directory.
+
+Use the keys in `.env.vercel.example` as the production Vercel environment variables. For Vercel,
+`LOCAL_STORAGE_ROOT` should stay under `/tmp`; that storage is ephemeral and should only be used for
+temporary upload handling, not durable media retention.
+
 ## Environment Notes
 
 - `auth_jwt_secret` must be replaced outside development.

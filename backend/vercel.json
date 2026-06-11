@@ -1,7 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "python3 scripts/vercel_build.py",
-  "outputDirectory": "public",
   "functions": {
     "api/**/*.py": {
       "excludeFiles": "{tests/**,__tests__/**,**/*.test.py,**/test_*.py,fixtures/**,__fixtures__/**,testdata/**,sample-data/**,static/**,assets/**,.pytest_cache/**,.ruff_cache/**,.venv/**,migrations/**,architecture.html}"

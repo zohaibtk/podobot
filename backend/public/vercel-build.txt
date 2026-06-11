@@ -1,1 +1,0 @@
-PodoBot backend static output placeholder for Vercel.

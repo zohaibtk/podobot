@@ -37,10 +37,16 @@ that ASGI app.
 
 Required deployment files:
 
-- `vercel.json`: build command, `public` output directory, function bundle exclusions, and rewrites.
+- `vercel.json`: Python function bundle exclusions and rewrites only.
 - `.python-version`: pins Vercel's Python runtime to a supported version.
 - `pyproject.toml` or `requirements.txt`: runtime dependencies.
-- `public/vercel-build.txt`: tracked placeholder for Vercel's configured output directory.
+
+Backend Vercel project settings:
+
+- Root Directory: `backend`
+- Build Command: leave empty / default
+- Output Directory: leave empty / default
+- Framework Preset: leave default/auto; do not use the frontend Vite project settings.
 
 Use the keys in `.env.vercel.example` as the production Vercel environment variables. For Vercel,
 `LOCAL_STORAGE_ROOT` should stay under `/tmp`; that storage is ephemeral and should only be used for

@@ -1,0 +1,53 @@
+# macOS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+frontend/.env
+frontend/.env.*
+backend/.env
+backend/.env.*
+!.env.example
+!.env.vercel.example
+!frontend/.env.example
+!frontend/.env.vercel.example
+!backend/.env.example
+!backend/.env.vercel.example
+
+# Vercel local project metadata
+.vercel/
+frontend/.vercel/
+backend/.vercel/
+
+# Frontend dependencies and build output
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+
+# Backend virtual environments, caches, and build artifacts
+.venv/
+.venv-run/
+backend/.venv/
+backend/.local/
+backend/.pytest_cache/
+backend/.ruff_cache/
+backend/*.egg-info/
+**/__pycache__/
+*.py[cod]
+
+# Local runtime data and generated files
+.local/
+reports/
+.supabase-pgpass

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "python3 scripts/vercel_build.py",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/app/index.py"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-@import "../../../../streamly-aesthetic/streamly-theme.css";
+@import "../streamly-aesthetic/streamly-theme.css";
 
 @tailwind base;
 @tailwind components;

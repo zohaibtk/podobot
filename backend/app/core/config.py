@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from pydantic import Field, RedisDsn, field_validator, model_validator
@@ -23,6 +24,7 @@ class Settings(BaseSettings):
     api_prefix: str = "/api"
     enable_openapi: bool = True
     cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:5173"])
+    cors_origin_regex: str | None = None
 
     postgres_host: str = "localhost"
     postgres_port: int = 5432
@@ -87,6 +89,19 @@ class Settings(BaseSettings):
         if path.is_absolute():
             return str(path)
         return str(REPOSITORY_ROOT / path)
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, value: object) -> object:
+        if not isinstance(value, str):
+            return value
+
+        cleaned = value.strip()
+        if not cleaned:
+            return []
+        if cleaned.startswith("["):
+            return json.loads(cleaned)
+        return [origin.strip() for origin in cleaned.split(",") if origin.strip()]
 
     @model_validator(mode="after")
     def reject_unsafe_production_defaults(self) -> "Settings":

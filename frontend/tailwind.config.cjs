@@ -1,4 +1,4 @@
-const streamlyPreset = require("../streamly-aesthetic/tailwind.streamly.preset.js");
+const streamlyPreset = require("./src/design-system/streamly-aesthetic/tailwind.streamly.preset.js");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {

@@ -9,8 +9,11 @@ def main() -> int:
         return 0
 
     if not os.getenv("DATABASE_URL_OVERRIDE"):
-        print("DATABASE_URL_OVERRIDE is required to run Vercel database migrations.")
-        return 1
+        print(
+            "Skipping database migrations because DATABASE_URL_OVERRIDE is not set. "
+            "Set it in Vercel env vars to run migrations during build."
+        )
+        return 0
 
     subprocess.check_call([sys.executable, "-m", "alembic", "upgrade", "head"])
     return 0

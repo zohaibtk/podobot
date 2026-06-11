@@ -32,7 +32,7 @@ cd backend
 ## Vercel Deployment
 
 Deploy this folder as its own Vercel project with the project Root Directory set to `backend`.
-The FastAPI serverless entrypoint is `api/index.py`, and `vercel.json` rewrites all requests to
+The FastAPI serverless entrypoint is `api/index.py`, and `vercel.json` rewrites `/api` requests to
 that ASGI app.
 
 Required deployment files:
@@ -51,6 +51,9 @@ Backend Vercel project settings:
 Use the keys in `.env.vercel.example` as the production Vercel environment variables. For Vercel,
 `LOCAL_STORAGE_ROOT` should stay under `/tmp`; that storage is ephemeral and should only be used for
 temporary upload handling, not durable media retention.
+
+If Vercel shows `FUNCTION_INVOCATION_FAILED`, check the function logs first. A common cause is
+`ENVIRONMENT=production` without the required production secrets and database settings.
 
 ## Environment Notes
 

@@ -18,6 +18,12 @@ def default_local_storage_root() -> str:
     return str(REPOSITORY_ROOT / ".local/storage")
 
 
+def is_tmp_path(path: Path) -> bool:
+    tmp_root = Path("/tmp").resolve()
+    resolved_path = path.resolve()
+    return resolved_path == tmp_root or tmp_root in resolved_path.parents
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -93,10 +99,14 @@ class Settings(BaseSettings):
     @classmethod
     def resolve_local_storage_root(cls, value: str) -> str:
         path = Path(value)
+        if os.getenv("VERCEL"):
+            if path.is_absolute():
+                if is_tmp_path(path):
+                    return str(path)
+                return "/tmp/podobot-storage"
+            return str(Path("/tmp") / path)
         if path.is_absolute():
             return str(path)
-        if os.getenv("VERCEL"):
-            return str(Path("/tmp") / path)
         return str(REPOSITORY_ROOT / path)
 
     @field_validator("cors_origins", mode="before")

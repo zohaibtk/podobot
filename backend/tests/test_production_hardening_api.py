@@ -78,6 +78,22 @@ def test_vercel_relative_storage_resolves_under_tmp(monkeypatch) -> None:
     assert vercel_settings.local_storage_root == "/tmp/podobot-storage"
 
 
+def test_vercel_rejects_non_tmp_absolute_storage(monkeypatch) -> None:
+    monkeypatch.setenv("VERCEL", "1")
+
+    vercel_settings = Settings(local_storage_root="/var/.local/storage", _env_file=None)
+
+    assert vercel_settings.local_storage_root == "/tmp/podobot-storage"
+
+
+def test_vercel_keeps_tmp_absolute_storage(monkeypatch) -> None:
+    monkeypatch.setenv("VERCEL", "1")
+
+    vercel_settings = Settings(local_storage_root="/tmp/custom-podobot-storage", _env_file=None)
+
+    assert vercel_settings.local_storage_root == "/tmp/custom-podobot-storage"
+
+
 @pytest.mark.parametrize(
     ("field_name", "override_value"),
     [

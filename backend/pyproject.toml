@@ -1,0 +1,48 @@
+[project]
+name = "podobot-backend"
+version = "0.1.0"
+description = "PodoBot FastAPI, Celery, MCP, and multi-agent foundation"
+requires-python = ">=3.11"
+dependencies = [
+  "alembic>=1.14.0,<2.0",
+  "celery[redis]>=5.4.0,<6.0",
+  "cryptography>=48.0.0,<49.0",
+  "fastapi>=0.115.0,<1.0",
+  "greenlet>=3.1.0,<4.0",
+  "httpx>=0.28.0,<1.0",
+  "mcp>=1.2.0,<2.0",
+  "pydantic>=2.10.0,<3.0",
+  "pydantic-settings>=2.7.0,<3.0",
+  "psycopg[binary]>=3.2.0,<4.0",
+  "python-multipart>=0.0.20,<1.0",
+  "redis>=5.2.0,<6.0",
+  "SQLAlchemy>=2.0.36,<3.0",
+  "structlog>=24.4.0,<25.0",
+  "uvicorn[standard]>=0.34.0,<1.0"
+]
+
+[build-system]
+requires = ["setuptools>=75.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["migrations*", "tests*"]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0,<9.0",
+  "pytest-asyncio>=0.25.0,<1.0",
+  "ruff>=0.8.0,<1.0"
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

@@ -1,0 +1,1 @@
+"""Research source registry module."""

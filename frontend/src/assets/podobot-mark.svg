@@ -1,0 +1,30 @@
+<svg width="420" height="420" viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="purpleGradMark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8B3DFF"/>
+      <stop offset="55%" stop-color="#5B2BEF"/>
+      <stop offset="100%" stop-color="#071848"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(-62 0)">
+    <path d="M155 85 H270 C350 85 395 130 395 200 C395 270 350 315 270 315 H235 V360 H155 Z"
+          fill="url(#purpleGradMark)"/>
+
+    <rect x="220" y="145" width="58" height="150" rx="28" fill="#ffffff"/>
+    <rect x="240" y="290" width="18" height="55" fill="#071848"/>
+    <ellipse cx="249" cy="350" rx="70" ry="14" fill="#071848"/>
+
+    <rect x="205" y="195" width="70" height="12" rx="6" fill="#ffffff"/>
+    <rect x="205" y="220" width="70" height="12" rx="6" fill="#ffffff"/>
+    <rect x="205" y="245" width="70" height="12" rx="6" fill="#ffffff"/>
+
+    <path d="M100 160 C65 205 65 255 100 300" fill="none" stroke="#6B35F5" stroke-width="12" stroke-linecap="round"/>
+    <path d="M125 180 C100 210 100 250 125 280" fill="none" stroke="#6B35F5" stroke-width="12" stroke-linecap="round"/>
+    <path d="M150 205 C137 225 137 240 150 260" fill="none" stroke="#6B35F5" stroke-width="12" stroke-linecap="round"/>
+
+    <path d="M425 160 C460 205 460 255 425 300" fill="none" stroke="#6B35F5" stroke-width="12" stroke-linecap="round"/>
+    <path d="M400 180 C425 210 425 250 400 280" fill="none" stroke="#6B35F5" stroke-width="12" stroke-linecap="round"/>
+    <path d="M375 205 C388 225 388 240 375 260" fill="none" stroke="#6B35F5" stroke-width="12" stroke-linecap="round"/>
+  </g>
+</svg>

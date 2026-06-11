@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PodoBot Backend — Architecture Diagram</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      min-height: 100vh;
+      padding: 40px 24px 80px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #f0f6fc;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #8b949e;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #8b949e;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    .diagram-wrapper {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 32px 16px;
+      overflow-x: auto;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.5);
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>PodoBot Backend — Architecture Diagram</h1>
+  <p>FastAPI · SQLAlchemy · Celery · MCP · Multi-Agent · Gemini · Buffer · 8 Research Providers</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#dbeafe"></div> Transport &amp; Security</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#dcfce7"></div> API Layer</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fef9c3"></div> Domain Modules</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fce7f3"></div> AI Orchestration</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ede9fe"></div> Research Pipeline</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ffedd5"></div> Workers &amp; Data</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f1f5f9"></div> External Services</div>
+</div>
+
+<div class="diagram-wrapper">
+  <div class="mermaid">
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "fontSize": "13px",
+    "fontFamily": "ui-monospace, SFMono-Regular, Menlo, monospace",
+    "primaryColor": "#eff6ff",
+    "primaryBorderColor": "#93c5fd",
+    "primaryTextColor": "#1e3a5f",
+    "secondaryColor": "#f0fdf4",
+    "secondaryBorderColor": "#86efac",
+    "tertiaryColor": "#fdf4ff",
+    "tertiaryBorderColor": "#d8b4fe",
+    "lineColor": "#64748b",
+    "edgeLabelBackground": "#f8fafc",
+    "clusterBkg": "#f8fafc",
+    "clusterBorder": "#cbd5e1"
+  }
+}}%%
+flowchart TB
+
+    %% ─── CLIENT ─────────────────────────────────────────────────
+    CLIENT["🖥️  FRONTEND CLIENT\nReact · localhost:5173"]
+
+    %% ─── MIDDLEWARE ──────────────────────────────────────────────
+    subgraph MW["⚙️  MIDDLEWARE STACK  (app/main.py)"]
+        direction LR
+        M_CORS["CORS Middleware\nallow_origins · allow_credentials"]
+        M_SEC["SecurityHeaders Middleware\nHSTS · X-Frame-Options · CSP"]
+        M_CTX["RequestContext Middleware\ncorrelation_id · structlog"]
+    end
+
+    %% ─── SECURITY ────────────────────────────────────────────────
+    subgraph SECLAYER["🔐  SECURITY LAYER  (app/security/)"]
+        direction LR
+        S_JWT["Custom HS256 JWT\nhmac.sha256 — no external lib\nencode / decode / expiry"]
+        S_CU["CurrentUser\nid · email · role_keys\npermissions · has_permission()"]
+        S_RBAC["RBAC Dependencies\nrequire_permission()\nrequire_role()"]
+    end
+
+    %% ─── API LAYER ───────────────────────────────────────────────
+    subgraph APILAYER["🌐  REST API  /api/v1  (app/api/v1/endpoints/)"]
+        direction LR
+        A_CORE["/auth   /health"]
+        A_CONTENT["/series   /episodes\n/outlines   /briefs"]
+        A_MEDIA["/recordings   /media\n/captions"]
+        A_INTEL["/research   /research_sources\n/strategy   /profiles"]
+        A_PUBLISH["/schedules   /buffer\n/publishing_operations\n/publishing_analytics"]
+        A_AI["/agents   /mcp\n/analytics   /settings"]
+    end
+
+    %% ─── DOMAIN MODULES ──────────────────────────────────────────
+    subgraph DOMAIN["📦  DOMAIN MODULES  (app/modules/)"]
+        direction TB
+
+        subgraph CONTENT_SVC["Content Pipeline"]
+            direction LR
+            DS_SERIES["Series Service\nSeriesStage state machine\nDISCOVERY→RECORDING→PUBLISHED"]
+            DS_EP["Episode Service\nEpisode + Generation\nepisode_number unique constraint"]
+            DS_OL["Outline Service"]
+            DS_BR["Brief Service"]
+            DS_REC["Recording Service\nMedia Services\nvideo · thumbnail · short-clips"]
+            DS_CAP["Caption Service\nplatform-specific captions\nLinkedIn · YouTube · X"]
+        end
+
+        subgraph PUBLISH_SVC["Publishing"]
+            direction LR
+            DS_SCH["Schedule Service\nBuffer Service\npublish schedule mgmt"]
+            DS_PUB_OPS["Publishing Ops Service\npublish_now · queue_post"]
+            DS_ANA["Analytics · Dashboard\naggregated metrics"]
+        end
+
+        subgraph INTEL_SVC["Intelligence"]
+            direction LR
+            DS_DISC["Discovery Service\ntopic discovery\nrelevance scoring"]
+            DS_STR["Strategy Service\nOpportunity Intelligence\ncontent ideas · scoring"]
+            DS_PROF["Profile Service\nhost / guest profiles"]
+            DS_SET["Settings / AuthzService\nRoles · Permissions\nWorkspace Users · RBAC DB"]
+        end
+    end
+
+    %% ─── AI ORCHESTRATION ────────────────────────────────────────
+    subgraph AIORCH["🤖  AI ORCHESTRATION  (app/agents/ + app/mcp/)"]
+        direction TB
+
+        subgraph AGENTS["Agent System"]
+            direction LR
+            AG_REG["AgentRegistryService\nAgent · PromptTemplate\nPromptVersion (versioned)\nDEFAULT seeding on startup"]
+            AG_EXEC["AgentExecutionService\nrun_agent() · retry_run()\n① resolve prompt version\n② call MCP tool\n③ call LLM\n④ validate output\n⑤ record AgentRun + AuditLog"]
+            AG_LLM_GEM["GeminiLLMProvider\ngenerate() · generate_text()\nvalidate_output()\nhttpx direct · json_mode"]
+            AG_LLM_UNV["UnavailableLLMProvider\ngraceful no-key fallback\nreturns safe stub output"]
+        end
+
+        subgraph MCPLAYER["MCP Layer"]
+            direction LR
+            MCP_REG["MCPRegistryService\nMCPServer · MCPTool\nMCPAuthConfig\nDEFAULT seeding on startup"]
+            MCP_EXEC["MCPToolExecutionService\nexecute_tool() · retry_run()\nrun_workflow_tool()\nrecords MCPToolRun + AuditLog"]
+            MCP_CB["Circuit Breaker\nfailure_threshold\ncooldown_seconds\napply_circuit_failure/success"]
+            MCP_ROUTER["MCPRouterClient\nroutes tool_key → adapter\nllm · buffer · research · storage"]
+        end
+
+        subgraph MCP_ADAPT["MCP Adapters  (app/mcp/adapters/)"]
+            direction LR
+            AD_LLM["LLM Adapter\nllm.generate_text\nllm.validate_output"]
+            AD_BUF["Buffer Adapter\nbuffer.test_connection\nbuffer.publish_post"]
+            AD_RES["Research Adapter\nresearch.search_sources\nresearch.list_enabled_sources\nresearch.get_trend_score"]
+            AD_STO["Storage Adapter\nstorage.get_signed_url\nstorage.upload_chunk"]
+        end
+    end
+
+    %% ─── RESEARCH PIPELINE ───────────────────────────────────────
+    subgraph RESEARCH["🔍  RESEARCH PIPELINE  (app/research/)"]
+        direction TB
+
+        R_REG["ResearchProviderRegistry\nsearch_sources · fetch_resource\nget_trend_score · scrape_resource\ncalculate_provider_scores"]
+
+        subgraph R_CREDS["Credentials & Config"]
+            direction LR
+            R_CRED["ResearchCredentialProvider\ncredential_for(provider_type)\nprovider_mode · missing_configuration"]
+        end
+
+        subgraph R_PERS["Persistence"]
+            direction LR
+            R_PERSIST["ResearchPersistenceService\nResearchRun lifecycle\nstart_run → complete_run / fail_run\npersist_document · record_source_usage"]
+            R_SCORE["Scoring Engine\nrelevance scoring\ntrend score · EWMA success rate\nDiscovery Relevance"]
+        end
+
+        subgraph PROVIDERS["Research Providers  (8 providers)"]
+            direction LR
+            P_REDDIT["Reddit\nJSON API"]
+            P_HN["HN Algolia\nAPI"]
+            P_YT["YouTube\nData API"]
+            P_EXA["Exa\nSearch"]
+            P_FC["Firecrawl\nScraping"]
+            P_SERP["SerpAPI\nTrends (primary)"]
+            P_PYT["pytrends\nFallback"]
+            P_GEM_R["Gemini\nClassifier"]
+        end
+    end
+
+    %% ─── CELERY WORKERS ──────────────────────────────────────────
+    subgraph WORKERS["⚡  CELERY WORKERS  (app/workers/)"]
+        direction LR
+        W_APP["Celery App\nRedis broker\nredis://localhost:6379/0"]
+        W_BUF["buffer.tasks\npublish_scheduled_posts\nretry on failure"]
+        W_HLT["health.tasks\nperiodic provider checks"]
+    end
+
+    %% ─── DATA LAYER ──────────────────────────────────────────────
+    subgraph DATA["💾  DATA LAYER"]
+        direction LR
+        DB[("PostgreSQL\nasync psycopg3\nSQLAlchemy 2.0\n27 Alembic migrations")]
+        CACHE[("Redis\nbroker   :6379/0\nresults  :6379/1")]
+        FS["Local Storage\n.local/storage/\nsigned URL abstraction\nS3-ready interface"]
+    end
+
+    %% ─── EXTERNAL SERVICES ───────────────────────────────────────
+    subgraph EXT["☁️  EXTERNAL SERVICES"]
+        direction LR
+        E_GEM["Google Gemini API\ngemini-2.5-flash\nJSON mode · text mode"]
+        E_BUF["Buffer.com\nOAuth 2.0\nWebhook callbacks\nscheduled publishing"]
+        E_YT["YouTube\nData API v3"]
+        E_REDDIT["Reddit\nJSON API"]
+        E_HN["HN Algolia\nSearch API"]
+        E_EXA["Exa\nNeural Search"]
+        E_FC["Firecrawl\nWeb Scraping"]
+        E_SERP["SerpAPI\nGoogle Trends"]
+    end
+
+    %% ─── CONNECTIONS ─────────────────────────────────────────────
+
+    %% Client → Middleware → Security → API
+    CLIENT -->|"HTTPS · Bearer token"| MW
+    M_CORS --> M_SEC --> M_CTX
+    MW -->|"authenticated request"| SECLAYER
+    S_JWT --> S_CU --> S_RBAC
+    SECLAYER -->|"CurrentUser resolved"| APILAYER
+
+    %% API → Services
+    APILAYER --> DOMAIN
+    APILAYER --> AIORCH
+    APILAYER --> RESEARCH
+
+    %% Domain → AI (workflow-triggered agent runs)
+    CONTENT_SVC -->|"record_workflow_agent_run()"| AG_EXEC
+    INTEL_SVC -->|"search_sources()"| R_REG
+
+    %% Agent execution flow
+    AG_EXEC -->|"① active prompt"| AG_REG
+    AG_EXEC -->|"② MCP tool call"| MCP_EXEC
+    AG_EXEC -->|"③ LLM generate"| AG_LLM_GEM
+    AG_EXEC -.->|"fallback (no key)"| AG_LLM_UNV
+
+    %% MCP execution flow
+    MCP_EXEC -->|"circuit check"| MCP_CB
+    MCP_CB -->|"route to adapter"| MCP_ROUTER
+    MCP_ROUTER --> AD_LLM & AD_BUF & AD_RES & AD_STO
+
+    %% Research adapter → registry
+    AD_RES -->|"delegates to"| R_REG
+
+    %% Research internals
+    R_REG --> R_CRED
+    R_REG --> R_PERSIST
+    R_REG --> PROVIDERS
+    R_PERSIST --> R_SCORE
+
+    %% Workers
+    W_APP --> W_BUF & W_HLT
+
+    %% Data persistence
+    DOMAIN --> DB
+    AIORCH --> DB
+    RESEARCH --> DB
+    W_APP --> CACHE
+    DS_REC --> FS
+
+    %% External service connections
+    AG_LLM_GEM -->|"REST · httpx"| E_GEM
+    AD_LLM -->|"REST · httpx"| E_GEM
+    P_GEM_R -->|"REST · httpx"| E_GEM
+
+    AD_BUF -->|"REST"| E_BUF
+    W_BUF -->|"REST"| E_BUF
+
+    P_YT -->|"REST"| E_YT
+    P_REDDIT -->|"REST"| E_REDDIT
+    P_HN -->|"REST"| E_HN
+    P_EXA -->|"REST"| E_EXA
+    P_FC -->|"REST"| E_FC
+    P_SERP -->|"REST"| E_SERP
+
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    securityLevel: "loose",
+    flowchart: {
+      useMaxWidth: false,
+      htmlLabels: true,
+      curve: "basis",
+      padding: 20,
+      nodeSpacing: 40,
+      rankSpacing: 60,
+    },
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,474 @@
+@import "../../../../streamly-aesthetic/streamly-theme.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --streamly-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --streamly-hairline: rgba(217, 200, 255, 0.72);
+  --streamly-surface-glass: rgba(255, 255, 255, 0.78);
+}
+
+html,
+body {
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgba(248, 246, 251, 0.95) 0%, #ffffff 42%, #f8f6fb 100%),
+    linear-gradient(135deg, rgba(239, 231, 255, 0.66), rgba(255, 255, 255, 0.86));
+  color: var(--streamly-text-primary);
+  font-feature-settings: "kern" 1, "liga" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+::selection {
+  background: rgba(134, 70, 238, 0.18);
+  color: var(--streamly-coal-black);
+}
+
+:focus-visible {
+  outline: 2px solid rgba(134, 70, 238, 0.7);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #main-content > * {
+    animation: streamly-page-in 360ms var(--streamly-ease) both;
+  }
+
+  .streamly-card,
+  .streamly-panel,
+  .streamly-button-primary,
+  .streamly-button-secondary {
+    transition:
+      background 180ms var(--streamly-ease),
+      border-color 180ms var(--streamly-ease),
+      box-shadow 180ms var(--streamly-ease),
+      transform 180ms var(--streamly-ease);
+  }
+
+  @keyframes streamly-page-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes streamly-shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes streamly-toast-in {
+    from {
+      opacity: 0;
+      transform: translate3d(14px, -6px, 0) scale(0.98);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    letter-spacing: 0;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  th {
+    font-size: 0.72rem;
+    letter-spacing: 0;
+  }
+}
+
+@layer components {
+  .streamly-theme {
+    background:
+      linear-gradient(180deg, rgba(248, 246, 251, 0.98) 0%, rgba(255, 255, 255, 0.96) 34%, rgba(243, 238, 255, 0.6) 100%),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.72), rgba(239, 231, 255, 0.42));
+  }
+
+  .streamly-page {
+    display: grid;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .streamly-page > * {
+    min-width: 0;
+  }
+
+  .streamly-page-hero {
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid rgba(217, 200, 255, 0.72);
+    border-radius: var(--streamly-radius-panel);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(243, 238, 255, 0.82) 52%, rgba(255, 255, 255, 0.9)),
+      var(--streamly-white);
+    box-shadow: var(--streamly-shadow-soft);
+  }
+
+  .streamly-page-hero::after {
+    position: absolute;
+    inset: auto 1.5rem 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(134, 70, 238, 0.34), transparent);
+    content: "";
+  }
+
+  .streamly-page-header {
+    padding: clamp(1.25rem, 2.2vw, 1.5rem);
+  }
+
+  .streamly-page-header-row,
+  .streamly-page-header-grid {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .streamly-page-header-row {
+    flex-wrap: wrap;
+  }
+
+  .streamly-page-header-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .streamly-page-header-copy {
+    min-width: 0;
+    max-width: 48rem;
+  }
+
+  .streamly-page-header-aside {
+    min-width: 0;
+  }
+
+  .streamly-page-header-body {
+    margin-top: 1.25rem;
+  }
+
+  .streamly-page-heading {
+    margin-top: 0.55rem;
+    color: var(--streamly-coal-black);
+    font-family: var(--streamly-font-platform);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.05;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .streamly-page-description {
+    margin-top: 0.75rem;
+    max-width: 48rem;
+    color: var(--streamly-purple-blue);
+    font-family: var(--streamly-font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.7;
+  }
+
+  @media (min-width: 1024px) {
+    .streamly-page-header-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem);
+    }
+  }
+
+  .streamly-page-title {
+    color: var(--streamly-coal-black);
+    font-family: var(--streamly-font-platform);
+    font-size: clamp(1.8rem, 7.2vw, 4.1rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.03;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .streamly-section-title {
+    color: var(--streamly-coal-black);
+    font-family: var(--streamly-font-platform);
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.12;
+  }
+
+  .streamly-card,
+  .streamly-premium-card {
+    box-sizing: border-box;
+    min-width: 0;
+    border: 1px solid rgba(217, 200, 255, 0.72);
+    border-radius: var(--streamly-radius-xl);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.9)),
+      var(--streamly-white);
+    box-shadow: 0 18px 44px rgba(63, 11, 147, 0.09);
+  }
+
+  .streamly-premium-card {
+    padding: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .streamly-card:hover,
+  .streamly-premium-card:hover {
+    border-color: rgba(134, 70, 238, 0.38);
+    box-shadow: 0 22px 58px rgba(63, 11, 147, 0.13);
+    transform: translateY(-1px);
+  }
+
+  .dashboard-stage-tooltip {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+
+  .dashboard-stage-tooltip-trigger:hover .dashboard-stage-tooltip,
+  .dashboard-stage-tooltip-trigger:focus .dashboard-stage-tooltip,
+  .dashboard-stage-tooltip-trigger:focus-visible .dashboard-stage-tooltip {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  [class*="rounded-streamly-xl"][class*="border-streamly-lavenderStrong"],
+  [class*="rounded-streamly-lg"][class*="border-streamly-lavenderStrong"] {
+    border-color: rgba(217, 200, 255, 0.76);
+  }
+
+  [class*="rounded-streamly-xl"][class*="bg-white"][class*="shadow-streamly-card"],
+  [class*="rounded-streamly-lg"][class*="bg-white"][class*="shadow-streamly-card"] {
+    box-sizing: border-box;
+    min-width: 0;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.9)),
+      var(--streamly-white);
+    box-shadow: 0 16px 42px rgba(63, 11, 147, 0.08);
+  }
+
+  [class*="rounded-streamly-xl"][class*="bg-streamly-wash"],
+  [class*="rounded-streamly-lg"][class*="bg-streamly-wash"] {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .streamly-panel {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border: 1px solid rgba(217, 200, 255, 0.88);
+    border-radius: var(--streamly-radius-panel);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(243, 238, 255, 0.68)),
+      var(--streamly-white);
+    padding: clamp(1rem, 2vw, 1.5rem);
+    box-shadow: var(--streamly-shadow-soft);
+  }
+
+  .streamly-button-primary {
+    background: var(--streamly-gradient-button);
+    box-shadow: 0 14px 28px rgba(134, 70, 238, 0.28);
+  }
+
+  .streamly-button-primary:hover {
+    box-shadow: 0 18px 38px rgba(134, 70, 238, 0.34);
+  }
+
+  .streamly-button-secondary {
+    border-color: rgba(217, 200, 255, 0.9);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 24px rgba(13, 0, 13, 0.06);
+  }
+
+  .streamly-button-secondary:hover {
+    border-color: rgba(134, 70, 238, 0.42);
+    background: var(--streamly-violet-wash);
+    transform: translateY(-1px);
+  }
+
+  .streamly-attention-button {
+    border-color: rgba(134, 70, 238, 0.44);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 246, 255, 0.94)),
+      var(--streamly-white);
+    box-shadow:
+      0 14px 30px rgba(63, 11, 147, 0.1),
+      0 0 0 1px rgba(134, 70, 238, 0.08);
+  }
+
+  .streamly-attention-button:hover {
+    border-color: rgba(134, 70, 238, 0.58);
+    box-shadow:
+      0 18px 42px rgba(63, 11, 147, 0.15),
+      0 0 0 3px rgba(134, 70, 238, 0.12);
+  }
+
+  .streamly-search {
+    border-color: rgba(217, 200, 255, 0.82);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 12px 30px rgba(63, 11, 147, 0.08);
+    transition:
+      border-color 180ms var(--streamly-ease),
+      box-shadow 180ms var(--streamly-ease),
+      transform 180ms var(--streamly-ease);
+  }
+
+  .streamly-search:hover {
+    border-color: rgba(134, 70, 238, 0.36);
+  }
+
+  .streamly-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--streamly-electric-purple);
+    font-size: 0.72rem;
+    letter-spacing: 0;
+  }
+
+  .streamly-kicker::before {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: var(--streamly-radius-pill);
+    background: currentColor;
+    content: "";
+  }
+
+  .streamly-table {
+    overflow: hidden;
+    border: 1px solid rgba(217, 200, 255, 0.72);
+    border-radius: var(--streamly-radius-xl);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 18px 44px rgba(63, 11, 147, 0.09);
+  }
+
+  .streamly-table table,
+  table.min-w-full,
+  table.w-full {
+    background: transparent;
+  }
+
+  .streamly-table thead,
+  table.min-w-full thead,
+  table.w-full thead {
+    background: rgba(243, 238, 255, 0.76);
+  }
+
+  .streamly-table tbody tr,
+  table.min-w-full tbody tr,
+  table.w-full tbody tr {
+    transition:
+      background 160ms var(--streamly-ease),
+      transform 160ms var(--streamly-ease);
+  }
+
+  .streamly-table tbody tr:hover,
+  table.min-w-full tbody tr:hover,
+  table.w-full tbody tr:hover {
+    background: rgba(243, 238, 255, 0.48);
+  }
+
+  .streamly-ai-pulse {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .streamly-ai-pulse::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.48), transparent);
+    content: "";
+    transform: translateX(-100%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .streamly-attention-button {
+      animation: streamly-attention-glow 2.8s var(--streamly-ease) infinite;
+    }
+
+    .streamly-attention-button:hover {
+      animation: none;
+    }
+
+    .streamly-attention-button:hover .streamly-attention-icon {
+      animation: none;
+      transform: translateX(0.12rem);
+    }
+
+    .streamly-attention-icon {
+      animation: streamly-attention-icon 2.8s var(--streamly-ease) infinite;
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+
+    .streamly-ai-pulse::after {
+      animation: streamly-shimmer 1.8s var(--streamly-ease) infinite;
+    }
+  }
+
+  @keyframes streamly-attention-glow {
+    0%,
+    100% {
+      box-shadow:
+        0 14px 30px rgba(63, 11, 147, 0.1),
+        0 0 0 1px rgba(134, 70, 238, 0.08),
+        0 0 0 0 rgba(134, 70, 238, 0);
+    }
+
+    45% {
+      box-shadow:
+        0 18px 42px rgba(63, 11, 147, 0.14),
+        0 0 0 1px rgba(134, 70, 238, 0.14),
+        0 0 0 8px rgba(134, 70, 238, 0.08);
+    }
+  }
+
+  @keyframes streamly-attention-icon {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    42% {
+      transform: translateX(0.22rem);
+    }
+
+    62% {
+      transform: translateX(0.1rem);
+    }
+  }
+}

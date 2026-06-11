@@ -1,0 +1,222 @@
+:root,
+.streamly-theme {
+  --streamly-pastel-purple: #a59dde;
+  --streamly-electric-purple: #8646ee;
+  --streamly-dark-violet: #3f0b93;
+  --streamly-deep-purple-blue: #4a3a8b;
+  --streamly-purple-blue: #4a3a8b;
+  --streamly-coal-black: #0d000d;
+  --streamly-paper: #f8f6fb;
+  --streamly-white: #ffffff;
+  --streamly-lavender: #efe7ff;
+  --streamly-lavender-strong: #d9c8ff;
+  --streamly-violet-wash: #f3eeff;
+  --streamly-text-primary: var(--streamly-coal-black);
+  --streamly-text-secondary: #35294d;
+  --streamly-text-muted: #716687;
+  --streamly-text-inverse: #ffffff;
+  --streamly-border-subtle: var(--streamly-lavender-strong);
+  --streamly-border-brand: var(--streamly-electric-purple);
+  --streamly-font-platform: Montserrat, Inter, ui-sans-serif, system-ui, sans-serif;
+  --streamly-font-body: Anybody, Inter, ui-sans-serif, system-ui, sans-serif;
+  --streamly-font-logo: "Red Rose", Georgia, serif;
+  --streamly-radius-sm: 0.5rem;
+  --streamly-radius-md: 0.75rem;
+  --streamly-radius-lg: 1rem;
+  --streamly-radius-xl: 1.5rem;
+  --streamly-radius-panel: 2rem;
+  --streamly-radius-pill: 999px;
+  --streamly-shadow-soft: 0 18px 45px rgba(63, 11, 147, 0.12);
+  --streamly-shadow-card: 0 10px 28px rgba(13, 0, 13, 0.08);
+  --streamly-shadow-button: 0 10px 18px rgba(134, 70, 238, 0.26);
+  --streamly-gradient-soft: linear-gradient(180deg, #8646ee 0%, #d9c8ff 46%, #ffffff 100%);
+  --streamly-gradient-hero: linear-gradient(135deg, #8646ee 0%, #a59dde 44%, #f8f6fb 100%);
+  --streamly-gradient-button: linear-gradient(135deg, #8646ee 0%, #3f0b93 100%);
+}
+
+.streamly-theme {
+  background: var(--streamly-paper);
+  color: var(--streamly-text-primary);
+  font-family: var(--streamly-font-platform);
+  line-height: 1.5;
+}
+
+.streamly-theme *,
+.streamly-theme *::before,
+.streamly-theme *::after {
+  box-sizing: border-box;
+}
+
+.streamly-hero {
+  display: grid;
+  min-height: 72vh;
+  place-items: center;
+  padding: clamp(3rem, 8vw, 7rem) 1.5rem;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.88), transparent 46%),
+    var(--streamly-gradient-hero);
+  text-align: center;
+}
+
+.streamly-hero h1 {
+  max-width: 11ch;
+  margin: 0 auto;
+  color: var(--streamly-coal-black);
+  font-size: clamp(2.75rem, 8vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+.streamly-logo-text {
+  color: var(--streamly-electric-purple);
+  font-family: var(--streamly-font-logo);
+  font-weight: 700;
+}
+
+.streamly-kicker {
+  margin: 0 0 0.75rem;
+  color: var(--streamly-electric-purple);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.streamly-lead {
+  max-width: 42rem;
+  margin: 1rem auto 0;
+  color: var(--streamly-text-secondary);
+  font-family: var(--streamly-font-body);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.streamly-card {
+  padding: 1.5rem;
+  border: 1px solid var(--streamly-border-subtle);
+  border-radius: var(--streamly-radius-xl);
+  background: var(--streamly-white);
+  box-shadow: var(--streamly-shadow-card);
+}
+
+.streamly-panel {
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--streamly-border-brand);
+  border-radius: var(--streamly-radius-panel);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.streamly-button-primary,
+.streamly-button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  gap: 0.5rem;
+  border-radius: var(--streamly-radius-pill);
+  font: 700 0.95rem/1 var(--streamly-font-platform);
+  letter-spacing: 0;
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+  cursor: pointer;
+}
+
+.streamly-button-primary {
+  border: 0;
+  padding: 0.78rem 1.25rem;
+  background: var(--streamly-electric-purple);
+  color: var(--streamly-text-inverse);
+  box-shadow: var(--streamly-shadow-button);
+}
+
+.streamly-button-primary:hover {
+  background: #7b3be4;
+  transform: translateY(-1px);
+}
+
+.streamly-button-secondary {
+  border: 1px solid var(--streamly-border-brand);
+  padding: 0.72rem 1.15rem;
+  background: var(--streamly-white);
+  color: var(--streamly-electric-purple);
+}
+
+.streamly-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--streamly-radius-pill);
+  background: var(--streamly-lavender);
+  color: var(--streamly-dark-violet);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.streamly-search {
+  width: min(100%, 30rem);
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--streamly-border-subtle);
+  border-radius: var(--streamly-radius-pill);
+  background: var(--streamly-white);
+  color: var(--streamly-text-primary);
+  box-shadow: var(--streamly-shadow-card);
+}
+
+.streamly-search:focus {
+  border-color: var(--streamly-border-brand);
+  box-shadow: 0 0 0 4px rgba(134, 70, 238, 0.18);
+  outline: none;
+}
+
+.streamly-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+
+.streamly-waveform {
+  display: inline-grid;
+  align-items: center;
+  grid-auto-flow: column;
+  gap: 0.24rem;
+  height: 2rem;
+}
+
+.streamly-waveform span {
+  width: 0.22rem;
+  border-radius: var(--streamly-radius-pill);
+  background: var(--streamly-electric-purple);
+}
+
+.streamly-waveform span:nth-child(1) { height: 30%; }
+.streamly-waveform span:nth-child(2) { height: 62%; }
+.streamly-waveform span:nth-child(3) { height: 92%; }
+.streamly-waveform span:nth-child(4) { height: 48%; }
+.streamly-waveform span:nth-child(5) { height: 78%; }
+
+.streamly-play {
+  display: inline-grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--streamly-coal-black);
+  color: var(--streamly-white);
+  cursor: pointer;
+}
+
+.streamly-play::before {
+  width: 0;
+  height: 0;
+  margin-left: 0.18rem;
+  border-top: 0.42rem solid transparent;
+  border-bottom: 0.42rem solid transparent;
+  border-left: 0.68rem solid currentColor;
+  content: "";
+}

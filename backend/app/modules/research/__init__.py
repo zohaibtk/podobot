@@ -1,0 +1,1 @@
+"""Research intelligence persistence module."""

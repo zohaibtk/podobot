@@ -51,3 +51,5 @@ backend/*.egg-info/
 .local/
 reports/
 .supabase-pgpass
+.vercel
+.env*

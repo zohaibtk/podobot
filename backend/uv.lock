@@ -690,6 +690,7 @@ source = { editable = "." }
 dependencies = [
     { name = "alembic" },
     { name = "celery", extra = ["redis"] },
+    { name = "cryptography" },
     { name = "fastapi" },
     { name = "greenlet" },
     { name = "httpx" },
@@ -715,6 +716,7 @@ dev = [
 requires-dist = [
     { name = "alembic", specifier = ">=1.14.0,<2.0" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0,<6.0" },
+    { name = "cryptography", specifier = ">=48.0.0,<49.0" },
     { name = "fastapi", specifier = ">=0.115.0,<1.0" },
     { name = "greenlet", specifier = ">=3.1.0,<4.0" },
     { name = "httpx", specifier = ">=0.28.0,<1.0" },

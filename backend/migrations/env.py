@@ -24,7 +24,7 @@ from app.modules.settings import models as settings_models  # noqa: F401
 from app.modules.strategy import models as strategy_models  # noqa: F401
 
 config = context.config
-config.set_main_option("sqlalchemy.url", str(settings.database_url))
+config.set_main_option("sqlalchemy.url", str(settings.database_url).replace("%", "%%"))
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
